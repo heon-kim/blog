@@ -1,44 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-const CATEGORIES = {
-  'Frontend': {
-    name: '프론트엔드',
-    subcategories: {
-      'JavaScript': {
-        name: '자바스크립트'
-      },
-      'CSS': {
-        name: 'CSS'
-      },
-      'React': {
-        name: '리액트'
-      }
-    }
-  },
-  'Backend': {
-    name: '백엔드',
-    subcategories: {
-      'Node.js': {
-        name: '노드'
-      },
-      'Database': {
-        name: '데이터베이스'
-      }
-    }
-  },
-  'DevOps': {
-    name: '데브옵스',
-    subcategories: {
-      'Docker': {
-        name: '도커'
-      },
-      'AWS': {
-        name: 'AWS'
-      }
-    }
-  }
-};
+import { CATEGORIES } from "../data/categories";
+import { posts as postsData } from "../data/posts";
+import { extractAllTags, filterPosts, toggleSetItem } from "../utils/postUtils";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -49,76 +13,16 @@ function Home() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   useEffect(() => {
-    // 임시 데이터. 실제로는 API에서 받아올 수 있음
-    const postsData = [
-      {
-        postId: "Module",
-        title: "모듈에 대한 이해",
-        desc: "자바스크립트 모듈 시스템의 동작 방식과 활용법에 대해 알아봅니다.",
-        createdAt: "2024-03-20",
-        category: "Frontend",
-        subcategory: "JavaScript",
-        tags: ["ES6", "Module"],
-      },
-      {
-        postId: "Selector",
-        title: "CSS 선택자 완벽 가이드",
-        desc: "CSS 선택자의 다양한 사용법과 우선순위에 대해 상세히 다룹니다.",
-        createdAt: "2024-03-19",
-        category: "Frontend",
-        subcategory: "CSS",
-        tags: ["Layout", "Tailwind"],
-      },
-      {
-        postId: "React-State",
-        title: "React 상태 관리의 모든 것",
-        desc: "React의 다양한 상태 관리 방법과 각각의 장단점을 알아봅니다.",
-        createdAt: "2024-03-18",
-        category: "Frontend",
-        subcategory: "React",
-        tags: ["Hooks", "State"],
-      },
-      {
-        postId: "Express-Middleware",
-        title: "Express 미들웨어 심화",
-        desc: "Express.js의 미들웨어 시스템을 자세히 알아봅니다.",
-        createdAt: "2024-03-17",
-        category: "Backend",
-        subcategory: "Node.js",
-        tags: ["Express", "NestJS"],
-      },
-      {
-        postId: "Docker-Basic",
-        title: "Docker 기초부터 실전까지",
-        desc: "Docker의 기본 개념과 실제 활용 방법을 알아봅니다.",
-        createdAt: "2024-03-16",
-        category: "DevOps",
-        subcategory: "Docker",
-        tags: ["Container", "Compose"],
-      }
-    ];
-
     setPosts(postsData);
-    
-    // 모든 태그 추출 및 중복 제거
-    const tags = [...new Set(postsData.flatMap(post => post.tags))];
-    setAllTags(tags);
+    setAllTags(extractAllTags(postsData));
   }, []);
 
   // 태그 토글 함수
   const toggleTag = (tag) => {
-    setSelectedTags(prev => {
-      const newTags = new Set(prev);
-      if (newTags.has(tag)) {
-        newTags.delete(tag);
-      } else {
-        newTags.add(tag);
-      }
-      return newTags;
-    });
+    setSelectedTags(prev => toggleSetItem(prev, tag));
   };
 
-  // 카테고리 토글 함수 추가
+  // 카테고리 토글 함수
   const toggleCategory = (key) => {
     if (selectedCategory === key) {
       setSelectedCategory(null);
@@ -129,25 +33,17 @@ function Home() {
     }
   };
 
-  // 서브카테고리 토글 함수 추가
+  // 서브카테고리 토글 함수
   const toggleSubcategory = (key) => {
     setSelectedSubcategory(selectedSubcategory === key ? null : key);
   };
 
-  // 카테고리와 태그에 따라 포스트 필터링
-  const filteredPosts = posts.filter(post => {
-    // 카테고리 필터
-    if (selectedCategory && post.category !== selectedCategory) {
-      return false;
-    }
-    if (selectedSubcategory && post.subcategory !== selectedSubcategory) {
-      return false;
-    }
-    // 태그 필터
-    if (selectedTags.size > 0 && !post.tags.some(tag => selectedTags.has(tag))) {
-      return false;
-    }
-    return true;
+  // 포스트 필터링
+  const filteredPosts = filterPosts({
+    posts,
+    selectedCategory,
+    selectedSubcategory,
+    selectedTags
   });
 
   return (

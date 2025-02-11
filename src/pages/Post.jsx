@@ -50,7 +50,7 @@ function Post() {
       {/* 포스트 헤더 */}
       <header className="mb-8">
         <div className="flex items-center gap-2 mb-4">
-          <span className="px-2.5 py-0.5 text-sm font-medium bg-gray-100 text-gray-800 rounded">
+          <span className="px-2.5 py-0.5 text-sm font-medium bg-orange-100 text-orange-800 rounded">
             {post.category}
           </span>
           {/* <span className="text-sm text-gray-600">
@@ -86,7 +86,7 @@ function Post() {
                 component: ({ className, children, inline }) => {
                   if (inline || !className) {
                     return (
-                      <code className="bg-gray-200 rounded px-1 text-sm text-red-500">
+                      <code className="bg-gray-200 rounded px-1 text-red-500">
                         {children}
                       </code>
                     );

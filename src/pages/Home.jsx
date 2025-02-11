@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 function Home() {
   const [posts, setPosts] = useState([]);
   const [allTags, setAllTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(new Set());
+  const [showMobileTags, setShowMobileTags] = useState(false);
 
   useEffect(() => {
     // 임시 데이터. 실제로는 API에서 받아올 수 있음
@@ -33,6 +35,25 @@ function Home() {
     setAllTags(tags);
   }, []);
 
+  // 태그 토글 함수
+  const toggleTag = (tag) => {
+    setSelectedTags(prev => {
+      const newTags = new Set(prev);
+      if (newTags.has(tag)) {
+        newTags.delete(tag);
+      } else {
+        newTags.add(tag);
+      }
+      return newTags;
+    });
+  };
+
+  // 선택된 태그에 따라 포스트 필터링
+  const filteredPosts = posts.filter(post => 
+    selectedTags.size === 0 || 
+    post.tags.some(tag => selectedTags.has(tag))
+  );
+
   return (
     <div>
       <div 
@@ -40,10 +61,26 @@ function Home() {
         style={{ backgroundImage: 'url("/Nature.jpg")' }}
       />
       
+      {/* 선택된 태그 표시 (작은 화면) */}
+      {selectedTags.size > 0 && (
+        <div className="lg:hidden mt-4 flex flex-wrap gap-2">
+          {Array.from(selectedTags).map((tag) => (
+            <button
+              key={tag}
+              onClick={() => toggleTag(tag)}
+              className="px-2 py-1 text-sm bg-orange-100 text-orange-600 rounded-xl"
+            >
+              #{tag}
+              <span className="ml-1 font-medium">×</span>
+            </button>
+          ))}
+        </div>
+      )}
+      
       <div className="mt-8 lg:grid lg:grid-cols-[1fr,250px] lg:gap-8">
         {/* 포스트 목록 */}
         <div className="grid gap-8">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <Link 
               key={post.postId}
               to={`/post/${post.postId}`}
@@ -85,17 +122,74 @@ function Home() {
             <h2 className="text-sm text-gray-500 mb-4">태그</h2>
             <div className="flex flex-wrap gap-2">
               {allTags.map((tag) => (
-                <span
+                <button
                   key={tag}
-                  className="px-2 py-1 text-sm bg-gray-100 text-gray-600 rounded-xl"
+                  onClick={() => toggleTag(tag)}
+                  className={`px-2 py-1 text-sm rounded-xl transition-colors ${
+                    selectedTags.has(tag)
+                      ? 'bg-orange-100 text-orange-600'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
                 >
                   #{tag}
-                </span>
+                </button>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* 태그 선택 버튼 (작은 화면) */}
+      <div className="fixed bottom-4 right-4 lg:hidden">
+        <button 
+          onClick={() => setShowMobileTags(true)}
+          className="bg-white shadow-lg rounded-full p-4 text-gray-600 hover:text-gray-900"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            strokeWidth={1.5} 
+            stroke="currentColor" 
+            className="w-6 h-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+          </svg>
+        </button>
+      </div>
+
+      {/* 모바일 태그 선택 모달 */}
+      {showMobileTags && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
+          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-xl p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">태그 선택</h2>
+              <button 
+                onClick={() => setShowMobileTags(false)}
+                className="text-gray-500"
+              >
+                닫기
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {allTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  className={`px-2 py-1 text-sm rounded-xl transition-colors ${
+                    selectedTags.has(tag)
+                      ? 'bg-orange-100 text-orange-600'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

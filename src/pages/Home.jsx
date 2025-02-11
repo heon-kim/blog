@@ -1,11 +1,52 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+const CATEGORIES = {
+  'Frontend': {
+    name: '프론트엔드',
+    subcategories: {
+      'JavaScript': {
+        name: '자바스크립트'
+      },
+      'CSS': {
+        name: 'CSS'
+      },
+      'React': {
+        name: '리액트'
+      }
+    }
+  },
+  'Backend': {
+    name: '백엔드',
+    subcategories: {
+      'Node.js': {
+        name: '노드'
+      },
+      'Database': {
+        name: '데이터베이스'
+      }
+    }
+  },
+  'DevOps': {
+    name: '데브옵스',
+    subcategories: {
+      'Docker': {
+        name: '도커'
+      },
+      'AWS': {
+        name: 'AWS'
+      }
+    }
+  }
+};
+
 function Home() {
   const [posts, setPosts] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState(new Set());
   const [showMobileTags, setShowMobileTags] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   useEffect(() => {
     // 임시 데이터. 실제로는 API에서 받아올 수 있음
@@ -15,17 +56,46 @@ function Home() {
         title: "모듈에 대한 이해",
         desc: "자바스크립트 모듈 시스템의 동작 방식과 활용법에 대해 알아봅니다.",
         createdAt: "2024-03-20",
-        tags: ["JavaScript", "Module", "ES6"],
-        category: "JavaScript",
+        category: "Frontend",
+        subcategory: "JavaScript",
+        tags: ["ES6", "Module"],
       },
       {
         postId: "Selector",
         title: "CSS 선택자 완벽 가이드",
         desc: "CSS 선택자의 다양한 사용법과 우선순위에 대해 상세히 다룹니다.",
         createdAt: "2024-03-19",
-        tags: ["CSS", "Frontend"],
-        category: "CSS",
+        category: "Frontend",
+        subcategory: "CSS",
+        tags: ["Layout", "Tailwind"],
       },
+      {
+        postId: "React-State",
+        title: "React 상태 관리의 모든 것",
+        desc: "React의 다양한 상태 관리 방법과 각각의 장단점을 알아봅니다.",
+        createdAt: "2024-03-18",
+        category: "Frontend",
+        subcategory: "React",
+        tags: ["Hooks", "State"],
+      },
+      {
+        postId: "Express-Middleware",
+        title: "Express 미들웨어 심화",
+        desc: "Express.js의 미들웨어 시스템을 자세히 알아봅니다.",
+        createdAt: "2024-03-17",
+        category: "Backend",
+        subcategory: "Node.js",
+        tags: ["Express", "NestJS"],
+      },
+      {
+        postId: "Docker-Basic",
+        title: "Docker 기초부터 실전까지",
+        desc: "Docker의 기본 개념과 실제 활용 방법을 알아봅니다.",
+        createdAt: "2024-03-16",
+        category: "DevOps",
+        subcategory: "Docker",
+        tags: ["Container", "Compose"],
+      }
     ];
 
     setPosts(postsData);
@@ -48,11 +118,37 @@ function Home() {
     });
   };
 
-  // 선택된 태그에 따라 포스트 필터링
-  const filteredPosts = posts.filter(post => 
-    selectedTags.size === 0 || 
-    post.tags.some(tag => selectedTags.has(tag))
-  );
+  // 카테고리 토글 함수 추가
+  const toggleCategory = (key) => {
+    if (selectedCategory === key) {
+      setSelectedCategory(null);
+      setSelectedSubcategory(null); // 카테고리 해제시 서브카테고리도 해제
+    } else {
+      setSelectedCategory(key);
+      setSelectedSubcategory(null); // 새 카테고리 선택시 서브카테고리 초기화
+    }
+  };
+
+  // 서브카테고리 토글 함수 추가
+  const toggleSubcategory = (key) => {
+    setSelectedSubcategory(selectedSubcategory === key ? null : key);
+  };
+
+  // 카테고리와 태그에 따라 포스트 필터링
+  const filteredPosts = posts.filter(post => {
+    // 카테고리 필터
+    if (selectedCategory && post.category !== selectedCategory) {
+      return false;
+    }
+    if (selectedSubcategory && post.subcategory !== selectedSubcategory) {
+      return false;
+    }
+    // 태그 필터
+    if (selectedTags.size > 0 && !post.tags.some(tag => selectedTags.has(tag))) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <div>
@@ -116,24 +212,71 @@ function Home() {
           ))}
         </div>
 
-        {/* 태그 목록 (큰 화면에서만 표시) */}
+        {/* 사이드바 */}
         <div className="hidden lg:block border-l p-4">
           <div className="sticky top-8">
-            <h2 className="text-sm text-gray-500 mb-4">태그</h2>
-            <div className="flex flex-wrap gap-2">
-              {allTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => toggleTag(tag)}
-                  className={`px-2 py-1 text-sm rounded-xl transition-colors ${
-                    selectedTags.has(tag)
-                      ? 'bg-orange-100 text-orange-600'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  #{tag}
-                </button>
-              ))}
+            {/* 카테고리 목록 */}
+            <div className="mb-6">
+              <h2 className="text-sm text-gray-500 mb-2">카테고리</h2>
+              <div className="space-y-2">
+                {Object.entries(CATEGORIES).map(([key, category]) => (
+                  <div key={key}>
+                    <button
+                      onClick={() => toggleCategory(key)}
+                      className={`text-sm font-medium ${
+                        selectedCategory === key
+                          ? 'text-orange-600'
+                          : 'text-gray-900 hover:text-orange-600'
+                      }`}
+                    >
+                      {category.name}
+                      {selectedCategory === key && (
+                        <span className="ml-1 font-medium">×</span>
+                      )}
+                    </button>
+                    {selectedCategory === key && (
+                      <div className="ml-4 mt-1 space-y-1">
+                        {Object.entries(category.subcategories).map(([subKey, subCategory]) => (
+                          <button
+                            key={subKey}
+                            onClick={() => toggleSubcategory(subKey)}
+                            className={`block text-sm ${
+                              selectedSubcategory === subKey
+                                ? 'text-orange-600'
+                                : 'text-gray-600 hover:text-orange-600'
+                            }`}
+                          >
+                            {subCategory.name}
+                            {selectedSubcategory === subKey && (
+                              <span className="ml-1 font-medium">×</span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 태그 목록 */}
+            <div>
+              <h2 className="text-sm text-gray-500 mb-4">태그</h2>
+              <div className="flex flex-wrap gap-2">
+                {allTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-2 py-1 text-sm rounded-xl transition-colors ${
+                      selectedTags.has(tag)
+                        ? 'bg-orange-100 text-orange-600'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

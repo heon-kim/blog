@@ -14,6 +14,18 @@ export default {
       typography: {
         DEFAULT: {
           css: {
+            'a': {
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'none',
+              },
+            },
+            '.prose a': {
+              textDecoration: 'underline',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            },
             h1: {
               fontSize: '2.25em',
               fontWeight: '700',

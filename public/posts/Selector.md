@@ -1,5 +1,3 @@
-# Selectors
-
 HTML 어딘가에 존재하는 요소를 찾아 스타일을 적용하는 방법을 배워봅시다.
 
 ## Basic Style Rules

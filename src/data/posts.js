@@ -1,4 +1,13 @@
 export const posts = [
+    {
+        postId: "InfiniteScroll",
+    title: "인피니트 스크롤 구현 가이드",
+    desc: "Intersection Observer API을 이용하여 인피니트 스크롤을 구현하는 방법에 대해 알아봅니다.",
+    createdAt: "2024-03-20",
+    category: "Frontend",
+    subcategory: "JavaScript",
+    tags: ["ES6"],
+    },
   {
     postId: "Module",
     title: "모듈에 대한 이해",

@@ -4,6 +4,7 @@ import Markdown from "markdown-to-jsx";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { posts } from "../data/posts";
+import frontMatter from 'front-matter';
 
 function Post() {
   const { postId } = useParams();
@@ -20,25 +21,24 @@ function Post() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        // posts 데이터에서 현재 postId와 일치하는 포스트 찾기
-        const postData = posts.find(p => p.postId === postId);
-        
-        if (!postData) {
-          throw new Error('Post not found');
-        }
-
         // Markdown 파일 불러오기
         const res = await fetch(`/posts/${postId}.md`);
         if (!res.ok) {
           throw new Error('Failed to fetch markdown content');
         }
-        const content = await res.text();
-
-        // 포스트 데이터와 마크다운 내용 합치기
-        setPost({ ...postData, content });
+        const rawContent = await res.text();
+        
+        // front matter 파싱
+        const { attributes: metadata, body: content } = frontMatter(rawContent);
+        
+        // 포스트 데이터 설정
+        setPost({ 
+          ...metadata, 
+          content,
+          postId 
+        });
       } catch (error) {
         console.error("Failed to fetch post:", error);
-        // 여기에 에러 처리 UI를 추가할 수 있습니다
       }
     };
 

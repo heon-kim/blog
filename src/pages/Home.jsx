@@ -4,6 +4,7 @@ import { extractAllTags, filterPosts, toggleSetItem } from "../utils/postUtils";
 import Sidebar from "../components/Sidebar";
 import PostList from "../components/PostList";
 import MobileTagModal from "../components/MobileTagModal";
+import frontMatter from 'front-matter';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -14,8 +15,24 @@ function Home() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   useEffect(() => {
-    setPosts(postsData);
-    setAllTags(extractAllTags(postsData));
+    const fetchPosts = async () => {
+      try {
+        const postMetadata = await Promise.all(
+          postsData.map(async (postId) => {
+            const res = await fetch(`/posts/${postId}.md`);
+            const rawContent = await res.text();
+            const { attributes: metadata } = frontMatter(rawContent);
+            return { ...metadata, postId };
+          })
+        );
+        setPosts(postMetadata);
+        setAllTags(extractAllTags(postMetadata));
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   // 태그 토글 함수

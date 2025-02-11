@@ -1,3 +1,13 @@
+---
+postId: Module
+title: 모듈에 대한 이해
+desc: 자바스크립트 모듈 시스템의 동작 방식과 활용법에 대해 알아봅니다.
+createdAt: 2024-03-20
+category: Frontend
+subcategory: JavaScript
+tags: ['ES6']
+---
+
 모듈은 여러 사람이 만든 코드들을 합쳐 거대한 프로그램을 만들 수 있도록 돕습니다.
 합치는 과정에서 다른 모듈 있는 코드가 내 코드가 영향을 주지 못하도록 제한합니다.
 

@@ -1,3 +1,13 @@
+---
+postId: Selector
+title: CSS 선택자 완벽 가이드
+desc: CSS 선택자의 다양한 사용법과 우선순위에 대해 상세히 다룹니다.
+createdAt: 2024-03-20
+category: Frontend
+subcategory: CSS
+tags: ['Layout']
+---
+
 HTML 어딘가에 존재하는 요소를 찾아 스타일을 적용하는 방법을 배워봅시다.
 
 ## Basic Style Rules

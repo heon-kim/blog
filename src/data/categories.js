@@ -1,38 +1,14 @@
+// 이 파일은 자동으로 생성되었습니다. 직접 수정하지 마세요.
 export const CATEGORIES = {
-  'Frontend': {
-    name: '프론트엔드',
-    subcategories: {
-      'JavaScript': {
-        name: '자바스크립트'
+  "Frontend": {
+    "name": "프론트엔드",
+    "subcategories": {
+      "CSS": {
+        "name": "CSS"
       },
-      'CSS': {
-        name: 'CSS'
-      },
-      'React': {
-        name: '리액트'
-      }
-    }
-  },
-  'Backend': {
-    name: '백엔드',
-    subcategories: {
-      'Node.js': {
-        name: '노드'
-      },
-      'Database': {
-        name: '데이터베이스'
-      }
-    }
-  },
-  'DevOps': {
-    name: '데브옵스',
-    subcategories: {
-      'Docker': {
-        name: '도커'
-      },
-      'AWS': {
-        name: 'AWS'
+      "JavaScript": {
+        "name": "자바스크립트"
       }
     }
   }
-}; 
+};

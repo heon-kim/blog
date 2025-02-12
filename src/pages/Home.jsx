@@ -18,11 +18,13 @@ function Home() {
     const fetchPosts = async () => {
       try {
         const postMetadata = await Promise.all(
-          postsData.map(async (postId) => {
-            const res = await fetch(`/posts/${postId}.md`);
+          postsData.map(async ({ id, category, subcategory }) => {
+            // 폴더 구조에 맞는 경로 생성
+            const postPath = `${category}/${subcategory}/${id}.md`;
+            const res = await fetch(`/posts/${postPath}`);
             const rawContent = await res.text();
             const { attributes: metadata } = frontMatter(rawContent);
-            return { ...metadata, postId };
+            return { ...metadata, postId: id };
           })
         );
         setPosts(postMetadata);

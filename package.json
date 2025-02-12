@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "pnpm run generate-categories && pnpm run generate-posts",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-categories": "node scripts/generateCategories.cjs",
+    "generate-posts": "node scripts/generatePosts.cjs"
   },
   "dependencies": {
     "front-matter": "^4.0.2",

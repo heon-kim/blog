@@ -3,47 +3,42 @@ import { useParams } from "react-router-dom";
 import Markdown from "markdown-to-jsx";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { posts } from "../data/posts";
+import { posts as postsData } from "../data/posts";
 import frontMatter from 'front-matter';
 
 function Post() {
   const { postId } = useParams();
-  const [post, setPost] = useState({
-    title: "",
-    desc: "",
-    createdAt: "",
-    content: "",
-    tags: [],
-    category: "",
-    subcategory: "",
-  });
+  const [post, setPost] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        // Markdown 파일 불러오기
-        const res = await fetch(`/posts/${postId}.md`);
-        if (!res.ok) {
-          throw new Error('Failed to fetch markdown content');
+        // posts 배열에서 현재 postId에 해당하는 포스트 정보 찾기
+        const postInfo = postsData.find(post => post.id === postId);
+        
+        if (!postInfo) {
+          console.error('Post not found');
+          return;
         }
+
+        // 폴더 구조에 맞는 경로 생성
+        const postPath = `${postInfo.category}/${postInfo.subcategory}/${postInfo.id}.md`;
+        const res = await fetch(`/posts/${postPath}`);
         const rawContent = await res.text();
+        const { attributes: metadata, body } = frontMatter(rawContent);
         
-        // front matter 파싱
-        const { attributes: metadata, body: content } = frontMatter(rawContent);
-        
-        // 포스트 데이터 설정
-        setPost({ 
-          ...metadata, 
-          content,
-          postId 
-        });
+        setPost({ ...metadata, content: body });
       } catch (error) {
-        console.error("Failed to fetch post:", error);
+        console.error('Failed to fetch post:', error);
       }
     };
 
     fetchPost();
   }, [postId]);
+
+  if (!post) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <article className="max-w-none">

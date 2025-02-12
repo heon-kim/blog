@@ -25,14 +25,14 @@
             "id": "d94701a0412169fe",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "split-diff-view",
               "state": {
-                "file": "Review/Service/EndingCredits.md",
-                "mode": "source",
-                "source": false
+                "aFile": "public/posts/.obsidian/workspace.json",
+                "bFile": "public/posts/.obsidian/workspace.json",
+                "aRef": ""
               },
-              "icon": "lucide-file",
-              "title": "EndingCredits"
+              "icon": "diff",
+              "title": "Diff: workspace.json"
             }
           }
         ],
@@ -196,8 +196,8 @@
   },
   "active": "d94701a0412169fe",
   "lastOpenFiles": [
-    "Frontend/JavaScript/InfiniteScroll.md",
     "Review/Service/EndingCredits.md",
+    "Frontend/JavaScript/InfiniteScroll.md",
     "Review/Service",
     "Review",
     "Frontend/CSS/Selector.md",

@@ -3,11 +3,16 @@ export const CATEGORIES = {
   "Frontend": {
     "name": "프론트엔드",
     "subcategories": {
-      "CSS": {
-        "name": "CSS"
-      },
       "JavaScript": {
         "name": "자바스크립트"
+      }
+    }
+  },
+  "Review": {
+    "name": "회고",
+    "subcategories": {
+      "Service": {
+        "name": "서비스"
       }
     }
   }

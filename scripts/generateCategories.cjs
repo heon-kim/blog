@@ -12,7 +12,9 @@ const categoryNameMap = {
   'Node.js': '노드',
   'Database': '데이터베이스',
   'Docker': '도커',
-  'AWS': 'AWS'
+  'AWS': 'AWS',
+  'Review': '회고',
+  'Service': '서비스'
 };
 
 function generateCategories() {

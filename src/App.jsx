@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Post from "./pages/Post";
 import Header from "./components/Header";
+import Guest from "./pages/Guest";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/post/:postId" element={<Post />} />
+            <Route path="/guest" element={<Guest />} />
           </Routes>
         </div>
       </Router>

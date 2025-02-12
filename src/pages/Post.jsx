@@ -5,6 +5,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { posts as postsData } from "../data/posts";
 import frontMatter from 'front-matter';
+import Giscus from "@giscus/react";
 
 function Post() {
   const { postId } = useParams();
@@ -105,6 +106,25 @@ function Post() {
         >
           {post.content}
         </Markdown>
+      </div>
+
+      {/* 댓글 섹션 */}
+      <div className="mt-16">
+        <h2 className="text-2xl font-bold mb-8">Comments</h2>
+        <Giscus
+          repo="heon-kim/blog-comments"
+          repoId="R_kgDOLEjyDQ"
+          category="Comments"
+          categoryId="DIC_kwDOLEjyDc4Cm419"
+          mapping="pathname"
+          term="Welcome to @giscus/react component!"
+          reactionsEnabled="1"
+          emitMetadata="0"
+          inputPosition="top"
+          theme="preferred_color_scheme"
+          lang="ko"
+          loading="lazy"
+        />
       </div>
     </article>
   );

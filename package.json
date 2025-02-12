@@ -13,6 +13,7 @@
     "generate-posts": "node scripts/generatePosts.cjs"
   },
   "dependencies": {
+    "@giscus/react": "^3.1.0",
     "front-matter": "^4.0.2",
     "gray-matter": "^4.0.3",
     "markdown-to-jsx": "^7.7.3",

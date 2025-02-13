@@ -32,7 +32,7 @@ function Guest() {
           repoId="R_kgDOLEjyDQ"
           category="Comments"
           categoryId="DIC_kwDOLEjyDc4Cm419"
-          mapping="specific"
+          mapping="url"           // specific 대신 url 사용
           term="guestbook"
           reactionsEnabled="1"
           emitMetadata="0"

@@ -116,8 +116,7 @@ function Post() {
           repoId="R_kgDOLEjyDQ"
           category="Comments"
           categoryId="DIC_kwDOLEjyDc4Cm419"
-          mapping="pathname"
-          term="Welcome to @giscus/react component!"
+          mapping="url"           // pathname 대신 url 사용
           reactionsEnabled="1"
           emitMetadata="0"
           inputPosition="top"

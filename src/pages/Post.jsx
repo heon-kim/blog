@@ -123,6 +123,7 @@ function Post() {
           theme="preferred_color_scheme"
           lang="ko"
           loading="lazy"
+          host="https://giscus.app"
         />
       </div>
     </article>

@@ -40,6 +40,7 @@ function Guest() {
           theme="preferred_color_scheme"
           lang="ko"
           loading="lazy"
+          host="https://giscus.app"
         />
       </div>
     </div>

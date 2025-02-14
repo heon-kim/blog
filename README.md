@@ -1,6 +1,6 @@
 # Heonlog
 
-![heonlog](https://amzn-s3-posts-bucket.s3.ap-northeast-2.amazonaws.com/GIFMaker_me+(1).gif)
+![heonlog](https://github.com/user-attachments/assets/ca47a668-1bc6-49bb-bfe2-6176ced7701a)
 
 ## 📝 프로젝트 소개
 Heonlog는 개발자의 기술 블로그 웹사이트입니다. React를 기반으로 제작되었으며, 마크다운 형식의 게시물을 지원합니다.

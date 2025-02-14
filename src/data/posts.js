@@ -8,6 +8,6 @@ export const posts = [
   {
     "id": "EndingCredits",
     "category": "Review",
-    "subcategory": "Service"
+    "subcategory": "Project"
   }
 ];

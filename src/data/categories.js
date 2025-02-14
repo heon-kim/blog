@@ -11,8 +11,8 @@ export const CATEGORIES = {
   "Review": {
     "name": "회고",
     "subcategories": {
-      "Service": {
-        "name": "서비스"
+      "Project": {
+        "name": "Project"
       }
     }
   }

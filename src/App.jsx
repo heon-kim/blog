@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Post from "./pages/Post";
 import Header from "./components/Header";
 import Guest from "./pages/Guest";
-
+import Update from "./pages/Update";
 function App() {
   return (
     <div className="app-content min-h-screen bg-white">
@@ -14,6 +14,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/post/:postId" element={<Post />} />
             <Route path="/guest" element={<Guest />} />
+            <Route path="/update" element={<Update />} />
           </Routes>
         </div>
       </Router>

@@ -29,6 +29,9 @@ function Header() {
             <Link to="/guest" className="text-gray-600 hover:text-gray-900">
               방명록
             </Link>
+            <Link to="/update" className="text-gray-600 hover:text-gray-900">
+              업데이트
+            </Link>
             <a href="https://github.com/heon-kim" 
                target="_blank" 
                rel="noopener noreferrer" 
@@ -86,6 +89,13 @@ function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 방명록
+              </Link>
+              <Link
+                to="/update"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                업데이트
               </Link>
               <a
                 href="https://github.com/heon-kim"

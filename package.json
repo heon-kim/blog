@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "prebuild": "pnpm run generate-categories && pnpm run generate-posts",
-    "build": "pnpm run generate-categories && pnpm run generate-posts && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-categories": "node scripts/generateCategories.cjs",
-    "generate-posts": "node scripts/generatePosts.cjs"
+    "generate-posts": "node scripts/generatePosts.cjs",
+    "postbuild": "cp -r public/* dist/"
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",

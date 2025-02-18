@@ -1,200 +1,204 @@
 ---
-title: 무한 스크롤 구현 가이드
-desc: Intersection Observer API을 이용하여 무한 스크롤을 구현하는 방법에 대해 알아봅니다.
-createdAt: 2024-03-20
+title: Intersection Observer API로 구현하는 무한 스크롤과 캐러셀
+desc: 프론트엔드 개발에서 무한 스크롤과 캐러셀은 자주 구현하게 되는 UI 패턴입니다. 이러한 기능을 구현할 때 많은 개발자들이 외부 라이브러리를 먼저 찾아보곤 합니다. 하지만 브라우저의 네이티브 API인 Intersection Observer를 활용하면, 더 효율적이고 가벼운 구현이 가능합니다.
+createdAt: 2025-02-18
 category: Frontend
 subcategory: JavaScript
 tags:
   - IntersectionObserver
 ---
-인스타그램이나 페이스북 같은 앱에서 아래로 계속 스크롤하면 새로운 게시물들이 계속해서 나타납니다.
-이것이 바로 '무한 스크롤'입니다.
 
-### 무한 스크롤이 왜 좋을까요?
+프론트엔드 개발에서 무한 스크롤과 캐러셀은 자주 구현하게 되는 UI 패턴입니다. 이러한 기능을 구현할 때 많은 개발자들이 외부 라이브러리를 먼저 찾아보곤 합니다. 하지만 브라우저의 네이티브 API인 Intersection Observer를 활용하면, 더 효율적이고 가벼운 구현이 가능합니다.
 
-1. 편리해요!
+## Intersection Observer API란?
 
-- 다음 페이지 버튼을 누를 필요 없이 그냥 스크롤만 하면 돼요
-- 특히 휴대폰으로 볼 때 손가락으로 쓱쓱 넘기기가 훨씬 편하죠
+Intersection Observer API는 타겟 요소와 상위 요소 또는 최상위 document의 viewport와의 교차점을 관찰하여 요소가 화면에 보이는지 여부를 비동기적으로 감지할 수 있게 해주는 API입니다.
 
-2. 재미있어요!
-
-- 계속 새로운 내용이 나타나서 보는 재미가 있어요
-- 마치 끝없는 책을 읽는 것처럼 계속 새로운 이야기를 발견할 수 있어요
-
-3. 똑똑해요!
-
-- 우리가 실제로 보려고 하는 내용만 가져와요
-- 한 번에 너무 많은 내용을 가져오지 않아서 휴대폰이나 컴퓨터가 덜 힘들어해요
-
-### 무한 스크롤은 어떻게 동작할까요?
-
-1. 우리가 페이지를 아래로 스크롤해요
-2. 특별한 감시자(Observer)가 우리가 페이지 끝부분에 가까워졌는지 지켜보고 있어요
-3. 끝부분에 가까워지면, 새로운 내용을 더 가져와서 보여줘요
-
-마치 책을 읽다가 마지막 페이지에 거의 다다랐을 때, 누군가가 새로운 페이지를 슥 끼워넣는 것처럼 동작한다고 생각하면 됩니다.
-
-이런 무한 스크롤 기능은 Intersection Observer API를 사용해서 만듭니다. 
-
-<hr />
-### 기존 스크롤 방식 VS Intersection Observer API
-
-1. 기존 스크롤 방식 (동기)
-
-- 마치 경찰관이 도로에 서서 지나가는 모든 차를 일일이 체크하는 것처럼 작동해요
-- 스크롤할 때마다 계속해서 위치를 확인하느라 컴퓨터가 매우 바빠져요
-- 화면에 보이는지 확인하기 위해 요소의 위치를 계속 계산해야 해서 느려질 수 있어요
-- 마치 매초마다 "여기 왔니? 여기 왔니?" 하고 계속 물어보는 것과 같아요
-
-2. Intersection Observer API (비동기)
-
-- CCTV처럼 특정 지점을 지켜보다가 무언가 지나가면 알려주는 방식이에요
-- 컴퓨터에게 "이 부분이 화면에 보이면 알려줘!"라고 한 번만 말해두면 돼요
-- 다른 일을 하면서도 동시에 관찰할 수 있어서 훨씬 효율적이에요
-- 위치 계산을 특별한 방법으로 해서 컴퓨터가 덜 힘들어해요
-
-실생활의 예시로 설명하면:
-
-- 전통적인 방식: 친구를 기다리면서 매 초마다 창밖을 확인하는 것
-- Intersection Observer: 현관 센서등을 달아두고 누가 지나가면 자동으로 알려주는 것
-
-결과적으로:
-
-- 전통적인 방식은 계속해서 확인하느라 컴퓨터도 힘들고 웹사이트도 느려질 수 있어요
-- Intersection Observer는 필요할 때만 알려주기 때문에 웹사이트가 더 빠르고 부드럽게 동작해요
-
-
-<hr />
-## **구현 방법**
-
-**1. 커스텀 훅 생성**
-
-```jsx
-interface UseInfiniteScrollProps {
-    threshold?: number;      // 교차 지점 비율 (0~1)
-    rootMargin?: string;     // 관찰 영역의 여백
-    onIntersect: () => void; // 교차 시 실행할 콜백 함수
-}
+```typescript
+const observer = new IntersectionObserver(callback, options);
 ```
 
-**2. 기본 설정**
-- **threshold 설정**:
-    - 0: 요소가 1px이라도 보일 때
-    - 1: 요소가 완전히 보일 때
-    - 0.5: 요소가 50% 보일 때
-- **rootMargin 활용**:
-    - 미리 로딩을 시작하려면 양수 값 사용
-    - 지연 로딩을 원하면 음수 값 사용
-
-```jsx
-const useInfiniteScroll = ({
-    threshold = 0.5,        // 기본값 50% 교차 시
-    rootMargin = '0px',     // 기본 여백 없음
-    onIntersect            // 필수 콜백 함수
-}: UseInfiniteScrollProps) => {
-    const targetRef = useRef<HTMLDivElement | null>(null);
-    // ...
-}
+### 기본 설정 옵션
+```typescript
+const options = {
+  root: null, // 관찰할 부모 요소 (null이면 viewport)
+  rootMargin: '0px', // root의 마진
+  threshold: 1.0 // 교차 비율 (0.0 ~ 1.0)
+};
 ```
 
-**3. Observer 콜백 설정**
-- **성능 최적화**:
-    - useCallback으로 콜백 함수 메모이제이션
-    - 불필요한 리렌더링 방지
+## 무한 스크롤 구현하기
 
-```jsx
-const observerCallback = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
+### 1. 커스텀 훅 작성
+
+```typescript
+function useInfiniteScroll(onIntersect: () => void) {
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
         entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                onIntersect();  // 교차 시 콜백 실행
-            }
+          if (entry.isIntersecting) {
+            onIntersect();
+          }
         });
-    },
-    [onIntersect]
+      },
+      { threshold: 0.5 }
+    );
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [onIntersect]);
+
+  return targetRef;
+}
+```
+
+### 2. 실제 사용 예시
+
+```typescript
+function ProductList() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const loadMore = async () => {
+    if (loading) return;
+    
+    setLoading(true);
+    try {
+      const newProducts = await fetchProducts(page);
+      setProducts(prev => [...prev, ...newProducts]);
+      setPage(prev => prev + 1);
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const targetRef = useInfiniteScroll(loadMore);
+
+  return (
+    <div className="product-list">
+      {products.map(product => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+      <div ref={targetRef} style={{ height: '10px' }} />
+      {loading && <LoadingSpinner />}
+    </div>
+  );
+}
+```
+
+## 캐러셀 구현하기
+
+캐러셀도 Intersection Observer를 활용하면 스크롤 기반의 자연스러운 동작을 구현할 수 있습니다.
+
+### 1. 캐러셀 컴포넌트 구현
+
+```typescript
+function Carousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-index'));
+            setActiveIndex(index);
+          }
+        });
+      },
+      {
+        root: carouselRef.current,
+        threshold: 0.6,
+        rootMargin: '-20px 0px'
+      }
+    );
+
+    const cards = document.querySelectorAll('.carousel-item');
+    cards.forEach(card => observerRef.current?.observe(card));
+
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  return (
+    <div className="carousel" ref={carouselRef}>
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className={`carousel-item ${index === activeIndex ? 'active' : ''}`}
+          data-index={index}
+        >
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+## 성능 최적화 팁
+
+1. **디바운싱 적용**
+```typescript
+const debouncedLoadMore = useCallback(
+  debounce(() => {
+    loadMore();
+  }, 300),
+  []
 );
 ```
 
-
-**4. Observer 설정 및 정리**
-
-- **메모리 관리**: useEffect의 클린업 함수에서 observer를 정리하여 메모리 누수 방지
-```jsx
+2. **메모리 관리**
+```typescript
 useEffect(() => {
-    // Observer 인스턴스 생성
-    const observer = new IntersectionObserver(observerCallback, {
-        threshold,
-        rootMargin
-    });
-
-    // 대상 요소 관찰 시작
-    const currentTarget = targetRef.current;
-    if (currentTarget) {
-        observer.observe(currentTarget);
-    }
-
-    // 클린업 함수
-    return () => {
-        if (currentTarget) {
-            observer.unobserve(currentTarget);
-        }
-    };
-}, [observerCallback, threshold, rootMargin]);
+  const observer = new IntersectionObserver(callback, options);
+  
+  return () => {
+    observer.disconnect();
+    // 추가적인 클린업 작업
+  };
+}, []);
 ```
 
-<hr />
-## **사용 방법**
+3. **에러 처리**
+```typescript
+const loadMore = async () => {
+  try {
+    setLoading(true);
+    await fetchData();
+  } catch (error) {
+    setError(error);
+    // 에러 처리 로직
+  } finally {
+    setLoading(false);
+  }
+};
+```
 
-**1. 기본 사용**
+## 브라우저 지원 및 폴리필
 
-```jsx
-function MyComponent() {
-    const loadMore = () => {
-        // 추가 데이터 로드 로직
-    };
+Intersection Observer API는 현대 브라우저에서 널리 지원되지만, 이전 브라우저를 지원해야 하는 경우 폴리필을 사용할 수 있습니다.
 
-    const targetRef = useInfiniteScroll({
-        threshold: 0.5,
-        onIntersect: loadMore
-    });
-
-    return (
-        <div>
-            {/* 컨텐츠 */}
-            <div ref={targetRef} /> {/* 관찰 대상 요소 */}
-        </div>
-    );
+```javascript
+if (!('IntersectionObserver' in window)) {
+  import('intersection-observer').then(() => {
+    // Intersection Observer 사용 가능
+  });
 }
 ```
 
- **2. 페이지네이션과 함께 사용**
+## 결론
 
-```jsx
-function PagedComponent() {
-    const [page, setPage] = useState(1);
-    const [items, setItems] = useState([]);
+Intersection Observer API를 활용하면 스크롤 이벤트 기반 구현보다 더 효율적이고 성능이 좋은 무한 스크롤과 캐러셀을 구현할 수 있습니다. 외부 라이브러리에 의존하지 않고도 필요한 기능을 구현할 수 있으며, 이는 번들 사이즈 최적화와 성능 향상으로 이어집니다.
 
-    const loadMore = async () => {
-        const newItems = await fetchItems(page);
-        setItems([...items, ...newItems]);
-        setPage(prev => prev + 1);
-    };
-
-    const targetRef = useInfiniteScroll({
-        onIntersect: loadMore
-    });
-
-    return (
-        <div>
-            {items.map(item => (
-                <ItemComponent key={item.id} {...item} />
-            ))}
-            <div ref={targetRef} />
-        </div>
-    );
-}
-```
-<hr />
-### 참고자료
-https://velog.io/@khy226/intersection-observer%EB%9E%80-feat-%EB%AC%B4%ED%95%9C-%EC%8A%A4%ED%81%AC%EB%A1%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0#%EA%B8%B0%EC%A1%B4-scroll-%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90
+특히 React와 같은 현대적인 프레임워크와 함께 사용할 때, 커스텀 훅으로 추상화하면 재사용 가능한 깔끔한 코드를 작성할 수 있습니다. 프로젝트의 요구사항과 상황에 따라 적절한 구현 방식을 선택하되, 네이티브 API의 활용도 적극적으로 고려해보시기 바랍니다. 

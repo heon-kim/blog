@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "prebuild": "pnpm run generate-categories && pnpm run generate-posts",
-    "build": "vite build",
+    "build": "pnpm run generate-categories && pnpm run generate-posts && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-categories": "node scripts/generateCategories.cjs",

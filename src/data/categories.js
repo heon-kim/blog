@@ -5,6 +5,12 @@ export const CATEGORIES = {
     "subcategories": {
       "JavaScript": {
         "name": "자바스크립트"
+      },
+      "React": {
+        "name": "리액트"
+      },
+      "TypeScript": {
+        "name": "TypeScript"
       }
     }
   },

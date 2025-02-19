@@ -11,6 +11,11 @@ export const posts = [
     "subcategory": "React"
   },
   {
+    "id": "Route",
+    "category": "Frontend",
+    "subcategory": "React"
+  },
+  {
     "id": "StateManagement",
     "category": "Frontend",
     "subcategory": "React"

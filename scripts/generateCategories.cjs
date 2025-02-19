@@ -3,18 +3,7 @@ const path = require('path');
 
 // 카테고리 이름 매핑 (영어 -> 한글)
 const categoryNameMap = {
-  'Frontend': '프론트엔드',
-  'Backend': '백엔드',
-  'DevOps': '데브옵스',
-  'JavaScript': '자바스크립트',
-  'CSS': 'CSS',
-  'React': '리액트',
-  'Node.js': '노드',
-  'Database': '데이터베이스',
-  'Docker': '도커',
-  'AWS': 'AWS',
-  'Review': '회고',
-  'Service': '서비스'
+ 
 };
 
 function generateCategories() {

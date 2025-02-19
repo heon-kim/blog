@@ -9,13 +9,13 @@ export const CATEGORIES = {
     }
   },
   "Frontend": {
-    "name": "프론트엔드",
+    "name": "Frontend",
     "subcategories": {
       "JavaScript": {
-        "name": "자바스크립트"
+        "name": "JavaScript"
       },
       "React": {
-        "name": "리액트"
+        "name": "React"
       },
       "Test": {
         "name": "Test"
@@ -29,7 +29,7 @@ export const CATEGORIES = {
     }
   },
   "Review": {
-    "name": "회고",
+    "name": "Review",
     "subcategories": {
       "Project": {
         "name": "Project"

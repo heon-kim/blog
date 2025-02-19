@@ -54,6 +54,12 @@ function Update() {
       id: 2,
       title: '방문자 수 조회',
       description: '페이지별 방문자 수 통계',
+      expectedDate: '2024.03'
+    },
+    {
+      id: 3,
+      title: '다크모드 지원',
+      description: '화면 설정에 따른 다크모드 지원',
       expectedDate: '2024.02'
     }
   ];

@@ -17,6 +17,9 @@ export const CATEGORIES = {
       "React": {
         "name": "리액트"
       },
+      "Test": {
+        "name": "Test"
+      },
       "TypeScript": {
         "name": "TypeScript"
       },

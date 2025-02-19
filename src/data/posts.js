@@ -6,6 +6,11 @@ export const posts = [
     "subcategory": "JavaScript"
   },
   {
+    "id": "Redux",
+    "category": "Frontend",
+    "subcategory": "React"
+  },
+  {
     "id": "StateManagement",
     "category": "Frontend",
     "subcategory": "React"

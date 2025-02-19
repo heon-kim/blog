@@ -6,6 +6,8 @@ category: Frontend
 subcategory: JavaScript
 tags:
   - IntersectionObserver
+  - 무한 스크롤
+  - 캐러셀
 ---
 
 프론트엔드 개발에서 무한 스크롤과 캐러셀은 자주 구현하게 되는 UI 패턴입니다. 이러한 기능을 구현할 때 많은 개발자들이 외부 라이브러리를 먼저 찾아보곤 합니다. 하지만 브라우저의 네이티브 API인 Intersection Observer를 활용하면, 더 효율적이고 가벼운 구현이 가능합니다.

@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 
 function PostList({ posts }) {
+  if (!posts) return (
+    <div className="flex justify-center items-center h-full">
+      <div className="text-gray-500">게시글이 없습니다.</div>
+    </div>
+  );
   return (
     <div className="grid gap-8">
       {posts.map((post) => (

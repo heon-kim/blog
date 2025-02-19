@@ -19,6 +19,9 @@ export const CATEGORIES = {
       },
       "TypeScript": {
         "name": "TypeScript"
+      },
+      "Vue": {
+        "name": "Vue"
       }
     }
   },

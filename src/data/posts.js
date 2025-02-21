@@ -11,6 +11,11 @@ export const posts = [
     "subcategory": "JavaScript"
   },
   {
+    "id": "Community",
+    "category": "Frontend",
+    "subcategory": "React"
+  },
+  {
     "id": "FSD",
     "category": "Frontend",
     "subcategory": "React"
@@ -39,6 +44,11 @@ export const posts = [
     "id": "API",
     "category": "Frontend",
     "subcategory": "TypeScript"
+  },
+  {
+    "id": "I18n",
+    "category": "Frontend",
+    "subcategory": "Vue"
   },
   {
     "id": "MultiTenant",

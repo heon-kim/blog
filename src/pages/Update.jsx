@@ -61,6 +61,12 @@ function Update() {
       title: '다크모드 지원',
       description: '화면 설정에 따른 다크모드 지원',
       expectedDate: '2024.02'
+    },
+    {
+      id: 4,
+      title: 'SEO 최적화',
+      description: 'https://velog.io/@chlruddlf73/%EA%B2%80%EC%83%89%ED%95%98%EB%A9%B4-%EB%82%98%EC%98%A4%EA%B2%8C-%ED%95%B4%EC%A4%98%EC%9E%89-SEO 참고하기',
+      expectedDate: '2024.02'
     }
   ];
 

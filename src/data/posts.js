@@ -1,6 +1,11 @@
 // 이 파일은 자동으로 생성되었습니다. 직접 수정하지 마세요.
 export const posts = [
   {
+    "id": "Data",
+    "category": "Backend",
+    "subcategory": "JPA"
+  },
+  {
     "id": "Graph",
     "category": "Data",
     "subcategory": "Neo4j"

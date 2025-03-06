@@ -25,7 +25,7 @@ function generatePosts() {
         posts.push({
           id,
           category: category.name,
-          subcategory: subcategory.name
+          subcategory: subcategory.name,
         });
       });
     });

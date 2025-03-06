@@ -1,12 +1,15 @@
 ---
 title: 연금저축 상품 Entity 구조 개선 및 성능 최적화
-desc: 연금저축 상품 데이터를 처리하는 과정에서 성능 이슈가 발생했습니다. 이러한 문제를 해결한 경험을 공유하고자 합니다.
+desc: 연금저축 상품의 Entity 구조를 개선하고 JPA N+1 문제를 해결하여 성능을 240ms까지 최적화한 경험을 공유합니다.
 createdAt: 2025-02-27
 category: Backend
 subcategory: JPA
 tags:
   - JPA
   - 성능 최적화
+  - N+1 문제
+  - Entity 설계
+  - 쿼리 최적화
 ---
 
 #  연금저축 상품 Entity 구조 개선 및 성능 최적화

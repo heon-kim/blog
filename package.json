@@ -7,11 +7,11 @@
     "dev": "vite",
     "prebuild": "pnpm run generate-categories && pnpm run generate-posts",
     "build": "npm run generate-sitemap && vite build",
+    "postbuild": "cp public/robots.txt dist/ && cp public/sitemap.xml dist/",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-categories": "node scripts/generateCategories.cjs",
     "generate-posts": "node scripts/generatePosts.cjs",
-    "postbuild": "cp -r public/* dist/",
     "generate-sitemap": "node scripts/generateSitemap.cjs"
   },
   "dependencies": {

@@ -40,6 +40,12 @@ function Update() {
         title: '업데이트 현황',
         description: '업데이트 현황 페이지',
         date: '2025.02.14'
+      },
+      {
+        id: 4,
+        title: 'SEO 최적화',
+        description: 'SEO 최적화 완료',
+        date: '2025.03.06'
       }
   ];
 
@@ -62,12 +68,7 @@ function Update() {
       description: '화면 설정에 따른 다크모드 지원',
       expectedDate: '2024.02'
     },
-    {
-      id: 4,
-      title: 'SEO 최적화',
-      description: 'https://velog.io/@chlruddlf73/%EA%B2%80%EC%83%89%ED%95%98%EB%A9%B4-%EB%82%98%EC%98%A4%EA%B2%8C-%ED%95%B4%EC%A4%98%EC%9E%89-SEO 참고하기',
-      expectedDate: '2024.02'
-    }
+ 
   ];
 
   // 구현된 기능을 날짜 내림차순으로 정렬 (최신순)
